@@ -23,16 +23,13 @@ function init() {
     // roll-over helpers
 
     const rollOverGeo = new THREE.BoxGeometry( 50, 50, 50 );
-    rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0x00FFFF, opacity: 0.5, transparent: true } );
+    rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, opacity: 0.5, transparent: true } );
     rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
     scene.add( rollOverMesh );
 
     // cubes
-
-    const map = new THREE.TextureLoader().load( 'textures/square-outline-textured.png' );
-    map.colorSpace = THREE.SRGBColorSpace;
     cubeGeo = new THREE.BoxGeometry( 50, 50, 50 );
-    cubeMaterial = new THREE.MeshLambertMaterial( { map: map } );
+    cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF, opacity: 0.5, transparent: true });
 
     // grid
 
@@ -74,7 +71,7 @@ function init() {
     // resize logic
 
     window.addEventListener( 'resize', onWindowResize );
-
+    document.getElementById("colorPicker").addEventListener("input", onColorPickerChange);
 }
 
 function onWindowResize() {
@@ -86,6 +83,13 @@ function onWindowResize() {
 
     render();
 
+}
+
+// Add the event handler for the color picker
+function onColorPickerChange(event) {
+    const newColor = event.target.value;
+    cubeMaterial.color.set(newColor);
+    rollOverMaterial.color.set(newColor);
 }
 
 function onPointerMove( event ) {
@@ -137,17 +141,22 @@ function onPointerDown( event ) {
 
         } else {
 
-            const voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
-            voxel.position.copy( intersect.point ).add( intersect.face.normal );
-            voxel.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
-            scene.add( voxel );
+            // Create a new material with the current color
+            const newMaterial = new THREE.MeshLambertMaterial({
+                color: cubeMaterial.color.clone(),
+                opacity: 0.5,
+                transparent: true,
+            });
 
-            objects.push( voxel );
+            const voxel = new THREE.Mesh(cubeGeo, newMaterial);
+            voxel.position.copy(intersect.point).add(intersect.face.normal);
+            voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
+            scene.add(voxel);
 
+            objects.push(voxel);
         }
 
         render();
-
     }
 
 }
