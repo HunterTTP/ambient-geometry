@@ -15,3 +15,21 @@ body {
     left: 90px;
     z-index: 10;
 }
+#saveButton {
+    position: absolute;
+    bottom: 20px;
+    left: 250px;
+    z-index: 10;
+}
+#loadButton {
+    position: absolute;
+    bottom: 20px;
+    left: 400px;
+    z-index: 10;
+}
+#clearAllButton {
+    position: absolute;
+    bottom: 20px;
+    left: 520px;
+    z-index: 10;
+}

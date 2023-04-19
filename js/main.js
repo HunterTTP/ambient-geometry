@@ -79,16 +79,17 @@ function init() {
     controls.addEventListener('start', () => isCameraRotating = true);
     controls.addEventListener('end', () => isCameraRotating = false);
 
-
+    // listeners
     document.addEventListener( 'pointermove', onPointerMove );
     document.addEventListener( 'pointerdown', onPointerDown );
     document.addEventListener( 'keydown', onDocumentKeyDown );
     document.addEventListener( 'keyup', onDocumentKeyUp );
-
-    // resize logic
-
     window.addEventListener( 'resize', onWindowResize );
     document.getElementById("colorPicker").addEventListener("input", onColorPickerChange);
+    document.getElementById("saveButton").addEventListener("click", onSaveButtonClick);
+    document.getElementById("loadButton").addEventListener("click", onLoadButtonClick);
+    document.getElementById("clearAllButton").addEventListener("click", onClearAllButtonClick);
+
 }
 
 function onWindowResize() {
@@ -217,4 +218,63 @@ function animate() {
     requestAnimationFrame(animate);
     controls.update();
     render();
+}
+
+function onSaveButtonClick() {
+    saveState();
+
+}
+
+function onLoadButtonClick() {
+    loadState();
+
+}
+
+function onClearAllButtonClick() {
+    for (let i = objects.length - 1; i >= 0; i--) {
+        const obj = objects[i];
+        if (obj !== plane) {
+            scene.remove(obj);
+            objects.splice(i, 1);
+        }
+    }
+    render();
+}
+
+function saveState() {
+    const state = objects.slice(1).map(object => {
+        return {
+            position: object.position.toArray(),
+            color: object.material.color.getHexString(),
+            opacity: object.material.opacity
+        };
+    });
+    const jsonString = JSON.stringify(state);
+    localStorage.setItem('craftCubeState', jsonString);
+}
+
+function loadState() {
+    const jsonString = localStorage.getItem('craftCubeState');
+    if (jsonString) {
+        const state = JSON.parse(jsonString);
+        // Remove all existing cubes
+        for (const object of objects.slice(1)) {
+            scene.remove(object);
+        }
+        objects.length = 1; // Keep only the plane
+
+        // Add cubes from the saved state
+        for (const cubeState of state) {
+            const material = new THREE.MeshLambertMaterial({
+                color: `#${cubeState.color}`,
+                opacity: cubeState.opacity,
+                transparent: true
+            });
+            const cube = new THREE.Mesh(cubeGeo, material);
+            cube.position.fromArray(cubeState.position);
+            scene.add(cube);
+            objects.push(cube);
+        }
+        render();
+    }
 }
