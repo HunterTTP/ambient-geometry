@@ -1,2 +1,2 @@
 # Craft Cube
-In browser 3D interactive Minecraft build planner
+Isometric interactive cube app
