@@ -13,17 +13,17 @@ render();
 
 function init() {
 
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera.position.set( 500, 800, 1300 );
+    camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.set( 500, 900, 1300 );
     camera.lookAt( 0, 0, 0 );
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xf0f0f0 );
+    scene.background = new THREE.Color( 0x333333 );
 
     // roll-over helpers
 
     const rollOverGeo = new THREE.BoxGeometry( 50, 50, 50 );
-    rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000, opacity: 0.5, transparent: true } );
+    rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0x00FFFF, opacity: 0.5, transparent: true } );
     rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
     scene.add( rollOverMesh );
 
@@ -32,14 +32,14 @@ function init() {
     const map = new THREE.TextureLoader().load( 'textures/square-outline-textured.png' );
     map.colorSpace = THREE.SRGBColorSpace;
     cubeGeo = new THREE.BoxGeometry( 50, 50, 50 );
-    cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xfeb74c, map: map } );
+    cubeMaterial = new THREE.MeshLambertMaterial( { map: map } );
 
     // grid
 
     const gridHelper = new THREE.GridHelper( 1000, 20 );
     scene.add( gridHelper );
 
-    //
+    // plane
 
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
@@ -71,7 +71,7 @@ function init() {
     document.addEventListener( 'keydown', onDocumentKeyDown );
     document.addEventListener( 'keyup', onDocumentKeyUp );
 
-    //
+    // resize logic
 
     window.addEventListener( 'resize', onWindowResize );
 
