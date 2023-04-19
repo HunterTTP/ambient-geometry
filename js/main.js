@@ -33,6 +33,7 @@ function init() {
     // cubes
     cubeGeo = new THREE.BoxGeometry( 50, 50, 50 );
     cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF, opacity: 0.5, transparent: true });
+    document.getElementById("transparencySlider").addEventListener("input", onTransparencySliderChange);
 
     // grid
 
@@ -101,11 +102,15 @@ function onWindowResize() {
 
 }
 
-// Add the event handler for the color picker
 function onColorPickerChange(event) {
     const newColor = event.target.value;
     cubeMaterial.color.set(newColor);
     rollOverMaterial.color.set(newColor);
+}
+
+function onTransparencySliderChange(event) {
+  const transparency = event.target.value / 100;
+  cubeMaterial.opacity = transparency;
 }
 
 function onPointerMove(event) {
@@ -163,12 +168,11 @@ function onPointerDown( event ) {
 
         } else {
 
-            // Create a new material with the current color
-            const newMaterial = new THREE.MeshLambertMaterial({
+             const newMaterial = new THREE.MeshLambertMaterial({
                 color: cubeMaterial.color.clone(),
-                opacity: 0.5,
+                opacity: cubeMaterial.opacity,
                 transparent: true,
-            });
+             });
 
             const voxel = new THREE.Mesh(cubeGeo, newMaterial);
             voxel.position.copy(intersect.point).add(intersect.face.normal);
