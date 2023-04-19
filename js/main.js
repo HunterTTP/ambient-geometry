@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'OrbitControls';
 
 let camera, scene, renderer;
 let plane;
@@ -62,6 +63,14 @@ function init() {
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
+
+    // Add OrbitControls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.mouseButtons = {
+    LEFT: null, // Disable left click
+    MIDDLE: THREE.MOUSE.PAN,
+    RIGHT: THREE.MOUSE.ROTATE
+    };
 
     document.addEventListener( 'pointermove', onPointerMove );
     document.addEventListener( 'pointerdown', onPointerDown );
