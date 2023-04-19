@@ -6,11 +6,13 @@ let plane;
 let pointer, raycaster, isShiftDown = false;
 let rollOverMesh, rollOverMaterial;
 let cubeGeo, cubeMaterial;
+let isCameraRotating = false;
+let controls;
 
 const objects = [];
 
 init();
-render();
+animate();
 
 function init() {
 
@@ -65,12 +67,17 @@ function init() {
     document.body.appendChild( renderer.domElement );
 
     // Add OrbitControls
-    const controls = new OrbitControls(camera, renderer.domElement);
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.maxPolarAngle = 7 * Math.PI / 8;
+    controls.enablePan = false;
     controls.mouseButtons = {
-    LEFT: null, // Disable left click
-    MIDDLE: THREE.MOUSE.PAN,
-    RIGHT: THREE.MOUSE.ROTATE
+        LEFT: null,
+        MIDDLE: null,
+        RIGHT: THREE.MOUSE.ROTATE
     };
+    controls.addEventListener('start', () => isCameraRotating = true);
+    controls.addEventListener('end', () => isCameraRotating = false);
+
 
     document.addEventListener( 'pointermove', onPointerMove );
     document.addEventListener( 'pointerdown', onPointerDown );
@@ -101,25 +108,31 @@ function onColorPickerChange(event) {
     rollOverMaterial.color.set(newColor);
 }
 
-function onPointerMove( event ) {
+function onPointerMove(event) {
+    if (isCameraRotating) {
+        rollOverMesh.visible = false;
+        return;
+    }
 
-    pointer.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+    pointer.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
 
-    raycaster.setFromCamera( pointer, camera );
+    raycaster.setFromCamera(pointer, camera);
 
-    const intersects = raycaster.intersectObjects( objects, false );
+    const intersects = raycaster.intersectObjects(objects, false);
 
-    if ( intersects.length > 0 ) {
+    if (intersects.length > 0) {
+        rollOverMesh.visible = true;
 
-        const intersect = intersects[ 0 ];
+        const intersect = intersects[0];
 
-        rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
-        rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+        rollOverMesh.position.copy(intersect.point).add(intersect.face.normal);
+        rollOverMesh.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
 
         render();
 
+    } else {
+        rollOverMesh.visible = false;
     }
-
 }
 
 function onPointerDown( event ) {
@@ -130,7 +143,7 @@ function onPointerDown( event ) {
 
     const intersects = raycaster.intersectObjects( objects, false );
 
-    if ( intersects.length > 0 ) {
+    if ( intersects.length > 0 && event.button !== 2 ) {
 
         const intersect = intersects[ 0 ];
 
@@ -194,4 +207,10 @@ function render() {
 
     renderer.render( scene, camera );
 
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    render();
 }
