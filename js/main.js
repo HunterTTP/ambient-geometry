@@ -69,7 +69,7 @@ function init() {
 
     // Add OrbitControls
     controls = new OrbitControls(camera, renderer.domElement);
-    controls.maxPolarAngle = 7 * Math.PI / 8;
+    controls.maxPolarAngle = Math.PI;
     controls.enablePan = false;
     controls.mouseButtons = {
         LEFT: null,
