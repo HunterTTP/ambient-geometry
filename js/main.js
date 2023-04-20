@@ -7,7 +7,7 @@ let pointer, raycaster, isShiftDown = false;
 let rollOverMesh, rollOverMaterial;
 let cubeGeo, cubeMaterial;
 let isCameraRotating = false;
-let controls;
+let controls, gridHelper;
 
 const objects = [];
 
@@ -37,7 +37,7 @@ function init() {
 
     // grid
 
-    const gridHelper = new THREE.GridHelper( 1000, 20 );
+    gridHelper = new THREE.GridHelper( 1000, 20 );
     scene.add( gridHelper );
 
     // plane
@@ -90,6 +90,7 @@ function init() {
     document.getElementById("saveButton").addEventListener("click", onSaveButtonClick);
     document.getElementById("loadButton").addEventListener("click", onLoadButtonClick);
     document.getElementById("clearAllButton").addEventListener("click", onClearAllButtonClick);
+    document.getElementById("toggleGridButton").addEventListener("click", toggleGridVisibility);
 
 }
 
@@ -235,6 +236,11 @@ function onSaveButtonClick() {
 function onLoadButtonClick() {
     loadState();
 
+}
+
+function toggleGridVisibility() {
+    gridHelper.visible = !gridHelper.visible;
+    render();
 }
 
 function onClearAllButtonClick() {
