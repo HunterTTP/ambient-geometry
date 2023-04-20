@@ -17,7 +17,7 @@ animate();
 function init() {
 
     camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera.position.set( 500, 900, 1300 );
+    camera.position.set( 500, 1200, 1300 );
     camera.lookAt( 0, 0, 0 );
 
     scene = new THREE.Scene();
@@ -255,13 +255,16 @@ function onClearAllButtonClick() {
 }
 
 function saveState() {
-    const state = objects.slice(1).map(object => {
-        return {
-            position: object.position.toArray(),
-            color: object.material.color.getHexString(),
-            opacity: object.material.opacity
-        };
-    });
+    const state = {
+        backgroundColor: scene.background.getHexString(),
+        cubes: objects.slice(1).map(object => {
+            return {
+                position: object.position.toArray(),
+                color: object.material.color.getHexString(),
+                opacity: object.material.opacity
+            };
+        })
+    };
     const jsonString = JSON.stringify(state);
     localStorage.setItem('craftCubeState', jsonString);
 }
@@ -270,6 +273,10 @@ function loadState() {
     const jsonString = localStorage.getItem('craftCubeState');
     if (jsonString) {
         const state = JSON.parse(jsonString);
+
+        // Set background color
+        scene.background = new THREE.Color(`#${state.backgroundColor}`);
+
         // Remove all existing cubes
         for (const object of objects.slice(1)) {
             scene.remove(object);
@@ -277,7 +284,7 @@ function loadState() {
         objects.length = 1; // Keep only the plane
 
         // Add cubes from the saved state
-        for (const cubeState of state) {
+        for (const cubeState of state.cubes) {
             const material = new THREE.MeshLambertMaterial({
                 color: `#${cubeState.color}`,
                 opacity: cubeState.opacity,
@@ -291,3 +298,4 @@ function loadState() {
         render();
     }
 }
+
