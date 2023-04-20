@@ -85,7 +85,7 @@ function init() {
     document.addEventListener( 'keydown', onDocumentKeyDown );
     document.addEventListener( 'keyup', onDocumentKeyUp );
     window.addEventListener( 'resize', onWindowResize );
-    document.getElementById("colorPicker").addEventListener("input", onColorPickerChange);document.getElementById("backgroundColorPicker").addEventListener("input", onBackgroundColorPickerChange);
+    document.getElementById("colorPicker").addEventListener("input", onColorPickerChange);
     document.getElementById("backgroundColorPicker").addEventListener("input", onBackgroundColorPickerChange);
     document.getElementById("saveButton").addEventListener("click", onSaveButtonClick);
     document.getElementById("loadButton").addEventListener("click", onLoadButtonClick);
@@ -302,4 +302,3 @@ function loadState() {
         render();
     }
 }
-
