@@ -24,7 +24,6 @@ function init() {
     scene.background = new THREE.Color( 0x333333 );
 
     // roll-over helpers
-
     const rollOverGeo = new THREE.BoxGeometry( 50, 50, 50 );
     rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, opacity: 0.5, transparent: true } );
     rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
@@ -36,12 +35,10 @@ function init() {
     document.getElementById("transparencySlider").addEventListener("input", onTransparencySliderChange);
 
     // grid
-
     gridHelper = new THREE.GridHelper( 1000, 20 );
     scene.add( gridHelper );
 
     // plane
-
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
@@ -54,7 +51,6 @@ function init() {
     objects.push( plane );
 
     // lights
-
     const ambientLight = new THREE.AmbientLight( 0x606060 );
     scene.add( ambientLight );
 
@@ -160,7 +156,6 @@ function onPointerDown( event ) {
         const intersect = intersects[ 0 ];
 
         // delete cube
-
         if ( isShiftDown ) {
 
             if ( intersect.object !== plane ) {
@@ -171,8 +166,7 @@ function onPointerDown( event ) {
 
             }
 
-            // create cube
-
+        // create cube
         } else {
 
              const newMaterial = new THREE.MeshLambertMaterial({
