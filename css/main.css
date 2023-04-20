@@ -3,6 +3,12 @@ body {
     padding: 0;
     background-color: #333333;
 }
+#backgroundColorPicker {
+    position: absolute;
+    bottom: 60px;
+    left: 20px;
+    z-index: 10;
+}
 #colorPicker {
     position: absolute;
     bottom: 20px;

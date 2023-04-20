@@ -85,7 +85,8 @@ function init() {
     document.addEventListener( 'keydown', onDocumentKeyDown );
     document.addEventListener( 'keyup', onDocumentKeyUp );
     window.addEventListener( 'resize', onWindowResize );
-    document.getElementById("colorPicker").addEventListener("input", onColorPickerChange);
+    document.getElementById("colorPicker").addEventListener("input", onColorPickerChange);document.getElementById("backgroundColorPicker").addEventListener("input", onBackgroundColorPickerChange);
+    document.getElementById("backgroundColorPicker").addEventListener("input", onBackgroundColorPickerChange);
     document.getElementById("saveButton").addEventListener("click", onSaveButtonClick);
     document.getElementById("loadButton").addEventListener("click", onLoadButtonClick);
     document.getElementById("clearAllButton").addEventListener("click", onClearAllButtonClick);
@@ -212,6 +213,12 @@ function render() {
 
     renderer.render( scene, camera );
 
+}
+
+function onBackgroundColorPickerChange(event) {
+    const newColor = event.target.value;
+    scene.background.set(newColor);
+    render();
 }
 
 function animate() {
