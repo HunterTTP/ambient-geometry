@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Ambient Geometry</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link type="text/css" rel="stylesheet" href="css/main.css">
-	</head>
-	<body>
-		<input type="color" id="colorPicker" value="#FFFFFF" />
-		<input type="color" id="backgroundColorPicker" value="#333333" />
-    	<input type="range" id="transparencySlider" min="10" max="100" value="50" />
-		<button id="saveButton">Save current scene</button>
-		<button id="loadButton">Load last save</button>
-		<button id="clearAllButton">Clear current scene</button>
-		<button id="toggleGridButton">Toggle Grid</button>
-		<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-		<script type="importmap">
-			{
-				"imports": {
-					"three": "https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.module.js",
-					"OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.134.0/examples/jsm/controls/OrbitControls.js"
-				}
-			}
-		</script>
-		<script type="module" src="js/main.js"></script>
-	</body>
+  <head>
+    <title>Ambient Geometry</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <div id="control-panel">
+      <div id="control-panel-toggle">&#9776;</div>
+      <div id="control-panel-content">
+        <input type="color" id="colorPicker" value="#FFFFFF" />
+        <input type="color" id="backgroundColorPicker" value="#333333" />
+        <input type="range" id="transparencySlider" min="10" max="100" value="50" />
+        <button id="saveButton">Save current scene</button>
+        <button id="loadButton">Load last save</button>
+        <button id="clearAllButton">Clear current scene</button>
+        <button id="toggleGridButton">Toggle Grid</button>
+      </div>
+    </div>
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.module.js",
+          "OrbitControls": "https://cdn.jsdelivr.net/npm/three@0.134.0/examples/jsm/controls/OrbitControls.js"
+        }
+      }
+    </script>
+    <script type="module" src="js/main.js"></script>
+  </body>
 </html>

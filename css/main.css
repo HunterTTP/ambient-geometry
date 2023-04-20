@@ -3,45 +3,43 @@ body {
     padding: 0;
     background-color: #333333;
 }
-#backgroundColorPicker {
+
+#control-panel {
     position: absolute;
-    bottom: 60px;
-    left: 20px;
+    top: 0;
+    left: -200px;
+    height: 100%;
+    width: 250px;
+    background-color: rgba(255, 255, 255, 0);
+    z-index: 10;
+    transition: left 0.5s ease;
+}
+
+#control-panel-toggle {
+    position: absolute;
+    top: 20px;
+    right: 0px;
+    padding: 0 0px;
+    color: white;
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 20px;
     z-index: 10;
 }
-#colorPicker {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    z-index: 10;
+
+#control-panel-content {
+    overflow-y: auto;
+    height: 40%;
+    padding: 20px;
 }
-#transparencySlider {
-    position: absolute;
-    bottom: 15px;
-    left: 90px;
-    z-index: 10;
+
+#control-panel.expanded {
+    left: 0;
 }
-#saveButton {
-    position: absolute;
-    bottom: 20px;
-    left: 250px;
-    z-index: 10;
-}
-#loadButton {
-    position: absolute;
-    bottom: 20px;
-    left: 400px;
-    z-index: 10;
-}
-#clearAllButton {
-    position: absolute;
-    bottom: 20px;
-    left: 520px;
-    z-index: 10;
-}
-#toggleGridButton {
-    position: absolute;
-    bottom: 20px;
-    left: 670px;
-    z-index: 10;
+
+input[type="color"],
+input[type="range"],
+button {
+    display: block;
+    margin-bottom: 15px;
 }

@@ -91,6 +91,10 @@ function init() {
     document.getElementById("loadButton").addEventListener("click", onLoadButtonClick);
     document.getElementById("clearAllButton").addEventListener("click", onClearAllButtonClick);
     document.getElementById("toggleGridButton").addEventListener("click", toggleGridVisibility);
+    document.getElementById("control-panel-toggle").addEventListener("click", () => {
+    const controlPanel = document.getElementById("control-panel");
+    controlPanel.classList.toggle("expanded");
+});
 
 }
 
