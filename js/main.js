@@ -383,9 +383,9 @@ function deleteCube(intersect) {
 
 function enableCameraControl() {
     controls.touches = {
-        ONE: THREE.TOUCH.ROTATE,
-        TWO: THREE.TOUCH.DOLLY
-    };
+	ONE: THREE.TOUCH.ROTATE,
+	TWO: THREE.TOUCH.DOLLY_PAN
+    }
     const globeIcon = document.getElementById("globe");
     globeIcon.classList.add("icon-active");
 }
@@ -394,7 +394,7 @@ function disableCameraControl() {
     controls.touches = {
         ONE: null,
         TWO: null
-    };
+     };
     const globeIcon = document.getElementById("globe");
     globeIcon.classList.remove("icon-active");
 }
