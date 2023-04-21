@@ -156,6 +156,11 @@ function onTransparencySliderChange(event) {
 }
 
 function onPointerMove(event) {
+    const target = event.target;
+    if (target.closest('#control-panel.expanded') && !target.closest('#control-panel-toggle')) {
+        return;
+    }
+
     if (isCameraRotating) {
         rollOverMesh.visible = false;
         return;
@@ -183,6 +188,11 @@ function onPointerMove(event) {
 }
 
 function onMouseDown(event) {
+    const target = event.target;
+    if (target.closest('#control-panel.expanded') && !target.closest('#control-panel-toggle')) {
+        return;
+    }
+
     pointer.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
 
     raycaster.setFromCamera(pointer, camera);
@@ -205,30 +215,24 @@ function onMouseDown(event) {
 }
 
 function onTouchStart(event) {
-  const target = event.target;
-  if (target.tagName === 'BUTTON' || target.closest('#control-panel')) {
-    return;
-  }
+    const target = event.target;
 
-  event.preventDefault();
-
-  if (toggleCameraControl) {
-    return;
-  }
-
-  pointer.set((event.touches[0].clientX / window.innerWidth) * 2 - 1, -(event.touches[0].clientY / window.innerHeight) * 2 + 1);
-  raycaster.setFromCamera(pointer, camera);
-  const intersects = raycaster.intersectObjects(objects, false);
-
-  if (intersects.length > 0) {
-    const intersect = intersects[0];
-
-    // Only call createCube when camera control is toggled off
-    if (!toggleCameraControl) {
-      createCube(intersect);
-      render();
+    if (target.closest('#control-panel.expanded') && !target.closest('#control-panel-toggle')) {
+        return;
     }
-  }
+
+    pointer.set((event.touches[0].clientX / window.innerWidth) * 2 - 1, -(event.touches[0].clientY / window.innerHeight) * 2 + 1);
+    raycaster.setFromCamera(pointer, camera);
+    const intersects = raycaster.intersectObjects(objects, false);
+
+    if (intersects.length > 0 && !toggleCameraControl) {
+        // Prevent scrolling
+        event.preventDefault();
+
+        const intersect = intersects[0];
+        createCube(intersect);
+        render();
+    }
 }
 
 function onDocumentKeyDown( event ) {
