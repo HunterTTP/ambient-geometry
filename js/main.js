@@ -113,7 +113,7 @@ function init() {
       const toggleCameraControlButton = document.getElementById("toggleCameraControl");
 
       if (toggleCameraControl) {
-        toggleCameraControlButton.textContent = 'Camera Mode: On';
+        toggleCameraControlButton.textContent = 'Touch Camera Mode: ON';
 
         // Update OrbitControls touch settings when camera control is toggled on
         controls.touches = {
@@ -121,7 +121,7 @@ function init() {
           TWO: null
         };
       } else {
-        toggleCameraControlButton.textContent = 'Camera Mode: Off';
+        toggleCameraControlButton.textContent = 'Touch Camera Mode: OFF';
 
         // Update OrbitControls touch settings when camera control is toggled off
         controls.touches = {

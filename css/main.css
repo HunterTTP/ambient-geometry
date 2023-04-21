@@ -46,20 +46,9 @@ button {
 .color-picker-container {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 .color-picker-container label {
   margin-left: 10px;
-  margin-bottom: 15px;
-}
-#toggleCameraControl {
-  position: fixed;
-  bottom: -10px;
-  right: 5px;
-  padding: 5px 5px;
-  background-color: transparent;
-  color: white;
-  border: none;
-  cursor: pointer;
-  z-index: 10;
+  margin-bottom: 5px;
 }
