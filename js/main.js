@@ -8,6 +8,7 @@ let rollOverMesh, rollOverMaterial;
 let cubeGeo, cubeMaterial;
 let isCameraRotating = false;
 let controls, gridHelper;
+let toggleCameraControl = false;
 
 const objects = [];
 
@@ -69,19 +70,34 @@ function init() {
     controls.maxPolarAngle = Math.PI;
     controls.enablePan = false;
     controls.mouseButtons = {
-        LEFT: null,
-        MIDDLE: null,
-        RIGHT: THREE.MOUSE.ROTATE
+      LEFT: null,
+      MIDDLE: null,
+      RIGHT: THREE.MOUSE.ROTATE
     };
+
+    if (toggleCameraControl) {
+      controls.touches = {
+        ONE: THREE.TOUCH.ROTATE,
+        TWO: null
+      };
+    } else {
+      controls.touches = {
+        ONE: null,
+        TWO: null
+      };
+    }
+
     controls.addEventListener('start', () => isCameraRotating = true);
     controls.addEventListener('end', () => isCameraRotating = false);
 
+
     // listeners
-    document.addEventListener( 'pointermove', onPointerMove );
-    document.addEventListener( 'pointerdown', onPointerDown );
-    document.addEventListener( 'keydown', onDocumentKeyDown );
-    document.addEventListener( 'keyup', onDocumentKeyUp );
-    window.addEventListener( 'resize', onWindowResize );
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('touchstart', onTouchStart, { passive: false });
+    document.addEventListener('mousemove', onPointerMove);
+    document.addEventListener('keydown', onDocumentKeyDown);
+    document.addEventListener('keyup', onDocumentKeyUp);
+    window.addEventListener('resize', onWindowResize);
     document.getElementById("colorPicker").addEventListener("input", onColorPickerChange);
     document.getElementById("backgroundColorPicker").addEventListener("input", onBackgroundColorPickerChange);
     document.getElementById("saveButton").addEventListener("click", onSaveButtonClick);
@@ -89,9 +105,31 @@ function init() {
     document.getElementById("clearAllButton").addEventListener("click", onClearAllButtonClick);
     document.getElementById("toggleGridButton").addEventListener("click", toggleGridVisibility);
     document.getElementById("control-panel-toggle").addEventListener("click", () => {
-    const controlPanel = document.getElementById("control-panel");
-    controlPanel.classList.toggle("expanded");
-});
+        const controlPanel = document.getElementById("control-panel");
+        controlPanel.classList.toggle("expanded");
+    });
+    document.getElementById("toggleCameraControl").addEventListener("click", () => {
+      toggleCameraControl = !toggleCameraControl;
+      const toggleCameraControlButton = document.getElementById("toggleCameraControl");
+
+      if (toggleCameraControl) {
+        toggleCameraControlButton.textContent = 'Camera Mode: On';
+
+        // Update OrbitControls touch settings when camera control is toggled on
+        controls.touches = {
+          ONE: THREE.TOUCH.ROTATE,
+          TWO: null
+        };
+      } else {
+        toggleCameraControlButton.textContent = 'Camera Mode: Off';
+
+        // Update OrbitControls touch settings when camera control is toggled off
+        controls.touches = {
+          ONE: null,
+          TWO: null
+        };
+      }
+    });
 
 }
 
@@ -144,49 +182,53 @@ function onPointerMove(event) {
     }
 }
 
-function onPointerDown( event ) {
+function onMouseDown(event) {
+    pointer.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
 
-    pointer.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+    raycaster.setFromCamera(pointer, camera);
 
-    raycaster.setFromCamera( pointer, camera );
+    const intersects = raycaster.intersectObjects(objects, false);
 
-    const intersects = raycaster.intersectObjects( objects, false );
-
-    if ( intersects.length > 0 && event.button !== 2 ) {
-
-        const intersect = intersects[ 0 ];
+    if (intersects.length > 0 && event.button !== 2) {
+        const intersect = intersects[0];
 
         // delete cube
-        if ( isShiftDown ) {
-
-            if ( intersect.object !== plane ) {
-
-                scene.remove( intersect.object );
-
-                objects.splice( objects.indexOf( intersect.object ), 1 );
-
-            }
-
+        if (isShiftDown) {
+            deleteCube(intersect);
         // create cube
         } else {
-
-             const newMaterial = new THREE.MeshLambertMaterial({
-                color: cubeMaterial.color.clone(),
-                opacity: cubeMaterial.opacity,
-                transparent: true,
-             });
-
-            const voxel = new THREE.Mesh(cubeGeo, newMaterial);
-            voxel.position.copy(intersect.point).add(intersect.face.normal);
-            voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
-            scene.add(voxel);
-
-            objects.push(voxel);
+            createCube(intersect);
         }
 
         render();
     }
+}
 
+function onTouchStart(event) {
+  const target = event.target;
+  if (target.tagName === 'BUTTON' || target.closest('#control-panel')) {
+    return;
+  }
+
+  event.preventDefault();
+
+  if (toggleCameraControl) {
+    return;
+  }
+
+  pointer.set((event.touches[0].clientX / window.innerWidth) * 2 - 1, -(event.touches[0].clientY / window.innerHeight) * 2 + 1);
+  raycaster.setFromCamera(pointer, camera);
+  const intersects = raycaster.intersectObjects(objects, false);
+
+  if (intersects.length > 0) {
+    const intersect = intersects[0];
+
+    // Only call createCube when camera control is toggled off
+    if (!toggleCameraControl) {
+      createCube(intersect);
+      render();
+    }
+  }
 }
 
 function onDocumentKeyDown( event ) {
@@ -238,7 +280,6 @@ function getContrastColor(hexColor) {
     const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
     return (yiq >= 128) ? 'black' : 'white';
 }
-
 
 function animate() {
     requestAnimationFrame(animate);
@@ -314,5 +355,27 @@ function loadState() {
             objects.push(cube);
         }
         render();
+    }
+}
+
+function createCube(intersect) {
+    const newMaterial = new THREE.MeshLambertMaterial({
+        color: cubeMaterial.color.clone(),
+        opacity: cubeMaterial.opacity,
+        transparent: true,
+    });
+
+    const voxel = new THREE.Mesh(cubeGeo, newMaterial);
+    voxel.position.copy(intersect.point).add(intersect.face.normal);
+    voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
+    scene.add(voxel);
+
+    objects.push(voxel);
+}
+
+function deleteCube(intersect) {
+    if (intersect.object !== plane) {
+        scene.remove(intersect.object);
+        objects.splice(objects.indexOf(intersect.object), 1);
     }
 }
