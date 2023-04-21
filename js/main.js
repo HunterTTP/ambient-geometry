@@ -77,18 +77,10 @@ function init() {
       MIDDLE: null,
       RIGHT: THREE.MOUSE.ROTATE
     };
-
-    if (toggleCameraControl) {
-      controls.touches = {
-        ONE: THREE.TOUCH.ROTATE,
-        TWO: THREE.TOUCH.DOLLY
-      };
-    } else {
-      controls.touches = {
+    controls.touches = {
         ONE: null,
         TWO: null
-      };
-    }
+     };
 
     controls.addEventListener('start', () => isCameraRotating = true);
     controls.addEventListener('end', () => isCameraRotating = false);
@@ -392,7 +384,7 @@ function deleteCube(intersect) {
 function enableCameraControl() {
     controls.touches = {
         ONE: THREE.TOUCH.ROTATE,
-        TWO: THREE.TOUCH.DOLLY,
+        TWO: THREE.TOUCH.DOLLY
     };
     const globeIcon = document.getElementById("globe");
     globeIcon.classList.add("icon-active");
@@ -401,7 +393,7 @@ function enableCameraControl() {
 function disableCameraControl() {
     controls.touches = {
         ONE: null,
-        TWO: null,
+        TWO: null
     };
     const globeIcon = document.getElementById("globe");
     globeIcon.classList.remove("icon-active");
