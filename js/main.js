@@ -68,7 +68,7 @@ function init() {
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
-    // Add OrbitControls
+    // Add initial OrbitControls
     controls = new OrbitControls(camera, renderer.domElement);
     controls.maxPolarAngle = Math.PI;
     controls.enablePan = false;
@@ -392,7 +392,7 @@ function deleteCube(intersect) {
 function enableCameraControl() {
     controls.touches = {
         ONE: THREE.TOUCH.ROTATE,
-        TWO: null,
+        TWO: THREE.TOUCH.DOLLY,
     };
     const globeIcon = document.getElementById("globe");
     globeIcon.classList.add("icon-active");
