@@ -5,23 +5,20 @@ Ambient Geometry is a relaxing 3D cube building application that allows users to
 
 # To-Do
 
-* Remove touch camera toggle from desktop resolutions
-* Implement undo and redo functionality
 * Add click-and-drag to create lines and squares of blocks
-* Implement a select mode for moving blocks
-* Add optional music
-* Add sound effects for user actions
+* Select mode for moving blocks
+* Delete mode to remove specific blocks
+* Music
+* Sound effects
 * Make translucent blocks appear seamless
-* Hide preview block when in delete mode
-* Add ability to adjust the size of the grid
-* Implement block texture options
-* Add a button to stop/start slow rotation of the scene
-* Introduce glowing blocks
-* Implement save/export functionality for 3D printing and other use
+* Grid size adjustment
+* Block texture options
+* Auto Rotate
+* Glowing blocks
+* Export for 3D printing, etc
 * Slider to toggle between layers
-* Create a user system for saving creations
-* Create a gallery for users to share and explore creations from others
-* Create a rating system for the gallery
+* User system to save and share creations
+* Gallery to browse other's creations (rate/vote system)
 * Move Javascript imports into local directory
 
 
