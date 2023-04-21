@@ -22,6 +22,7 @@ function init() {
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0x333333 );
+    updateControlPanelTextColor(scene.background.getHexString());
 
     // roll-over helpers
     const rollOverGeo = new THREE.BoxGeometry( 50, 50, 50 );
@@ -218,7 +219,26 @@ function onBackgroundColorPickerChange(event) {
     const newColor = event.target.value;
     scene.background.set(newColor);
     render();
+
+    updateControlPanelTextColor(newColor);
 }
+
+function updateControlPanelTextColor(backgroundColor) {
+    const textColor = getContrastColor(backgroundColor.substring(1));
+    const labels = document.querySelectorAll("#control-panel-content label");
+    labels.forEach(label => {
+        label.style.color = textColor;
+    });
+}
+
+function getContrastColor(hexColor) {
+    const r = parseInt(hexColor.substr(0, 2), 16);
+    const g = parseInt(hexColor.substr(2, 2), 16);
+    const b = parseInt(hexColor.substr(4, 2), 16);
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return (yiq >= 128) ? 'black' : 'white';
+}
+
 
 function animate() {
     requestAnimationFrame(animate);
