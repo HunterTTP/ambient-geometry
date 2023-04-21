@@ -31,6 +31,7 @@ body {
     overflow-y: auto;
     height: calc(100% - 60px);
     padding: 20px;
+    color: #000000;
 }
 
 #control-panel.expanded {
