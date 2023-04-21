@@ -9,8 +9,10 @@ let cubeGeo, cubeMaterial;
 let isCameraRotating = false;
 let controls, gridHelper;
 let toggleCameraControl = false;
+let historyPointer = -1;
 
 const objects = [];
+const historyStack = [];
 
 init();
 animate();
@@ -105,6 +107,8 @@ function init() {
     document.getElementById("loadButton").addEventListener("click", onLoadButtonClick);
     document.getElementById("clearAllButton").addEventListener("click", onClearAllButtonClick);
     document.getElementById("toggleGridButton").addEventListener("click", toggleGridVisibility);
+    document.getElementById("undo").addEventListener("click", undo);
+    document.getElementById("redo").addEventListener("click", redo);
     document.getElementById("control-panel-toggle").addEventListener("click", () => {
         const controlPanel = document.getElementById("control-panel");
         controlPanel.classList.toggle("expanded");
@@ -366,12 +370,22 @@ function createCube(intersect) {
     scene.add(voxel);
 
     objects.push(voxel);
+
+    // Add action to the history stack
+    historyStack.splice(historyPointer + 1, historyStack.length);
+    historyStack.push({ action: 'create', object: voxel });
+    historyPointer++;
 }
 
 function deleteCube(intersect) {
     if (intersect.object !== plane) {
         scene.remove(intersect.object);
         objects.splice(objects.indexOf(intersect.object), 1);
+
+        // Add action to the history stack
+        historyStack.splice(historyPointer + 1, historyStack.length);
+        historyStack.push({ action: 'delete', object: intersect.object });
+        historyPointer++;
     }
 }
 
@@ -391,4 +405,38 @@ function disableCameraControl() {
     };
     const globeIcon = document.getElementById("globe");
     globeIcon.classList.remove("icon-active");
+}
+
+function undo() {
+    if (historyPointer < 0) return;
+
+    const action = historyStack[historyPointer];
+    historyPointer--;
+
+    if (action.action === 'create') {
+        scene.remove(action.object);
+        objects.splice(objects.indexOf(action.object), 1);
+    } else if (action.action === 'delete') {
+        objects.push(action.object);
+        scene.add(action.object);
+    }
+
+    render();
+}
+
+function redo() {
+    if (historyPointer >= historyStack.length - 1) return;
+
+    historyPointer++;
+
+    const action = historyStack[historyPointer];
+    if (action.action === 'create') {
+        objects.push(action.object);
+        scene.add(action.object);
+    } else if (action.action === 'delete') {
+        scene.remove(action.object);
+        objects.splice(objects.indexOf(action.object), 1);
+    }
+
+    render();
 }
