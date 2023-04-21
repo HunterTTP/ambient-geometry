@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link type="text/css" rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
   </head>
   <body>
     <div id="control-panel">
@@ -19,11 +20,15 @@
           <label for="backgroundColorPicker">Background Color</label>
         </div>
         <input type="range" id="transparencySlider" min="10" max="100" value="50" />
-        <button id="toggleCameraControl" class="floating-button">Touch Camera Mode: OFF</button>
         <button id="saveButton">Save current scene</button>
         <button id="loadButton">Load last save</button>
         <button id="clearAllButton">Clear current scene</button>
         <button id="toggleGridButton">Toggle Grid</button>
+      </div>
+      <div id="undo-redo-container">
+        <i class="fas fa-globe icon" id ="globe"></i>
+        <i class="fas fa-undo" id="undo"></i>
+        <i class="fas fa-redo" id="redo"></i>
       </div>
     </div>
     <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>

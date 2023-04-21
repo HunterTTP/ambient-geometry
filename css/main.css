@@ -44,12 +44,46 @@ button {
     display: block;
     margin-bottom: 15px;
 }
+
 .color-picker-container {
   display: flex;
   align-items: center;
   margin-bottom: 5px;
 }
+
 .color-picker-container label {
   margin-left: 10px;
   margin-bottom: 5px;
+}
+
+.icon-container {
+  display: inline-block;
+  transition: filter 0.3s;
+}
+
+.icon-container:hover {
+  filter: invert(1);
+}
+
+.icon {
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#undo-redo-container {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    gap: 25px;
+}
+
+#undo-redo-container i {
+    font-size: 24px;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.icon.icon-active {
+    color: orange !important;
 }

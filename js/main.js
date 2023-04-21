@@ -109,27 +109,14 @@ function init() {
         const controlPanel = document.getElementById("control-panel");
         controlPanel.classList.toggle("expanded");
     });
-    document.getElementById("toggleCameraControl").addEventListener("click", () => {
-      toggleCameraControl = !toggleCameraControl;
-      const toggleCameraControlButton = document.getElementById("toggleCameraControl");
+    document.getElementById("globe").addEventListener("click", () => {
+        toggleCameraControl = !toggleCameraControl;
 
-      if (toggleCameraControl) {
-        toggleCameraControlButton.textContent = 'Touch Camera Mode: ON';
-
-        // Update OrbitControls touch settings when camera control is toggled on
-        controls.touches = {
-          ONE: THREE.TOUCH.ROTATE,
-          TWO: null
-        };
-      } else {
-        toggleCameraControlButton.textContent = 'Touch Camera Mode: OFF';
-
-        // Update OrbitControls touch settings when camera control is toggled off
-        controls.touches = {
-          ONE: null,
-          TWO: null
-        };
-      }
+        if (toggleCameraControl) {
+            enableCameraControl();
+        } else {
+            disableCameraControl();
+        }
     });
 
 }
@@ -386,4 +373,22 @@ function deleteCube(intersect) {
         scene.remove(intersect.object);
         objects.splice(objects.indexOf(intersect.object), 1);
     }
+}
+
+function enableCameraControl() {
+    controls.touches = {
+        ONE: THREE.TOUCH.ROTATE,
+        TWO: null,
+    };
+    const globeIcon = document.getElementById("globe");
+    globeIcon.classList.add("icon-active");
+}
+
+function disableCameraControl() {
+    controls.touches = {
+        ONE: null,
+        TWO: null,
+    };
+    const globeIcon = document.getElementById("globe");
+    globeIcon.classList.remove("icon-active");
 }
