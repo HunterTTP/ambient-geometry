@@ -81,7 +81,7 @@ function init() {
     if (toggleCameraControl) {
       controls.touches = {
         ONE: THREE.TOUCH.ROTATE,
-        TWO: null
+        TWO: THREE.TOUCH.DOLLY
       };
     } else {
       controls.touches = {
