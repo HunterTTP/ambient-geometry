@@ -226,15 +226,18 @@ function onTouchStart(event) {
     raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObjects(objects, false);
 
-    if (intersects.length > 0 && !toggleCameraControl) {
+    if (intersects.length > 0) {
         // Prevent scrolling
         event.preventDefault();
 
-        const intersect = intersects[0];
-        createCube(intersect);
-        render();
+        if (!toggleCameraControl) {
+            const intersect = intersects[0];
+            createCube(intersect);
+            render();
+        }
     }
 }
+
 
 function onDocumentKeyDown( event ) {
 
