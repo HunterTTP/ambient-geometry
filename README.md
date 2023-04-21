@@ -5,6 +5,7 @@ Ambient Geometry is a relaxing 3D cube building application that allows users to
 
 # To-Do
 
+* Remove touch camera toggle from desktop resolutions
 * Implement undo and redo functionality
 * Add click-and-drag to create lines and squares of blocks
 * Implement a select mode for moving blocks
