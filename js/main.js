@@ -103,6 +103,7 @@ function init() {
     document.getElementById("toggleGridButton").addEventListener("click", toggleGridVisibility);
     document.getElementById("undo").addEventListener("click", undo);
     document.getElementById("redo").addEventListener("click", redo);
+    document.getElementById("toggleAutoRotate").addEventListener("click", toggleAutoRotate);
     document.getElementById("control-panel-toggle").addEventListener("click", () => {
         const controlPanel = document.getElementById("control-panel");
         controlPanel.classList.toggle("expanded");
@@ -426,4 +427,13 @@ function redo() {
     }
 
     render();
+}
+
+function toggleAutoRotate() {
+    if (controls.autoRotate != true) {
+        controls.autoRotate = true
+        controls.autoRotateSpeed = 0.5;
+    } else {
+        controls.autoRotate = false
+    }
 }
