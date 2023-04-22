@@ -19,4 +19,4 @@ Ambient Geometry is a relaxing 3D cube building web app that allows users to cre
 * Slider to toggle between layers
 * User system to save and share creations
 * Gallery to browse other's creations (rate/vote system)
-* Move Javascript imports into local directory
+* Move all imports into the project
