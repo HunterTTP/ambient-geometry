@@ -143,6 +143,11 @@ function onTransparencySliderChange(event) {
 }
 
 function onPointerMove(event) {
+    if (toggleCameraControl) {
+    rollOverMesh.visible = false;
+    return;
+    }
+
     if (!event.target.closest('#threejs-canvas')) {
     rollOverMesh.visible = false;
     return;
@@ -209,11 +214,10 @@ function onTouchStart(event) {
         // Prevent scrolling
         event.preventDefault();
 
-        if (!toggleCameraControl) {
-            const intersect = intersects[0];
-            createCube(intersect);
-            render();
-        }
+    const intersect = intersects[0];
+    createCube(intersect);
+    render();
+
     }
 }
 
@@ -346,6 +350,11 @@ function loadState() {
 }
 
 function createCube(intersect) {
+
+    if (toggleCameraControl) {
+        return;
+     }
+
     const newMaterial = new THREE.MeshLambertMaterial({
         color: cubeMaterial.color.clone(),
         opacity: cubeMaterial.opacity,
@@ -382,6 +391,11 @@ function enableCameraControl() {
 	ONE: THREE.TOUCH.ROTATE,
 	TWO: THREE.TOUCH.DOLLY_PAN
     }
+    controls.mouseButtons = {
+      LEFT: THREE.MOUSE.ROTATE,
+      MIDDLE: null,
+      RIGHT: THREE.MOUSE.ROTATE
+    };
     const globeIcon = document.getElementById("globe");
     globeIcon.classList.add("icon-active");
 }
@@ -391,6 +405,11 @@ function disableCameraControl() {
         ONE: null,
         TWO: null
      };
+    controls.mouseButtons = {
+      LEFT: null,
+      MIDDLE: null,
+      RIGHT: THREE.MOUSE.ROTATE
+    };
     const globeIcon = document.getElementById("globe");
     globeIcon.classList.remove("icon-active");
 }
