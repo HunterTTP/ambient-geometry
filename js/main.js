@@ -104,19 +104,8 @@ function init() {
     document.getElementById("undo").addEventListener("click", undo);
     document.getElementById("redo").addEventListener("click", redo);
     document.getElementById("toggleAutoRotate").addEventListener("click", toggleAutoRotate);
-    document.getElementById("control-panel-toggle").addEventListener("click", () => {
-        const controlPanel = document.getElementById("control-panel");
-        controlPanel.classList.toggle("expanded");
-    });
-    document.getElementById("globe").addEventListener("click", () => {
-        toggleCameraControl = !toggleCameraControl;
-
-        if (toggleCameraControl) {
-            enableCameraControl();
-        } else {
-            disableCameraControl();
-        }
-    });
+    document.getElementById("control-panel-toggle").addEventListener("click", controlPanelToggle);
+    document.getElementById("globe").addEventListener("click", globeCameraToggle);
 
 }
 
@@ -220,7 +209,6 @@ function onTouchStart(event) {
 
     }
 }
-
 
 function onDocumentKeyDown( event ) {
 
@@ -451,8 +439,23 @@ function redo() {
 function toggleAutoRotate() {
     if (controls.autoRotate != true) {
         controls.autoRotate = true
-        controls.autoRotateSpeed = 0.5;
+        controls.autoRotateSpeed = 0.75;
     } else {
         controls.autoRotate = false
+    }
+}
+
+function controlPanelToggle() {
+    const controlPanel = document.getElementById("control-panel");
+    controlPanel.classList.toggle("expanded");
+}
+
+function globeCameraToggle() {
+    toggleCameraControl = !toggleCameraControl;
+
+    if (toggleCameraControl) {
+        enableCameraControl();
+    } else {
+        disableCameraControl();
     }
 }
