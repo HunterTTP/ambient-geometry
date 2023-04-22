@@ -66,7 +66,8 @@ function init() {
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
+    renderer.domElement.id = 'threejs-canvas';
+    document.body.appendChild(renderer.domElement);
 
     // Add initial OrbitControls
     controls = new OrbitControls(camera, renderer.domElement);
@@ -140,9 +141,9 @@ function onTransparencySliderChange(event) {
 }
 
 function onPointerMove(event) {
-    const target = event.target;
-    if (target.closest('#control-panel.expanded') && !target.closest('#control-panel-toggle')) {
-        return;
+    if (!event.target.closest('#threejs-canvas')) {
+    rollOverMesh.visible = false;
+    return;
     }
 
     if (isCameraRotating) {
@@ -172,10 +173,7 @@ function onPointerMove(event) {
 }
 
 function onMouseDown(event) {
-    const target = event.target;
-    if (target.closest('#control-panel.expanded') && !target.closest('#control-panel-toggle')) {
-        return;
-    }
+    if (!event.target.closest('#threejs-canvas')) return;
 
     pointer.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
 
@@ -199,11 +197,7 @@ function onMouseDown(event) {
 }
 
 function onTouchStart(event) {
-    const target = event.target;
-
-    if (target.closest('#control-panel.expanded') && !target.closest('#control-panel-toggle')) {
-        return;
-    }
+    if (!event.target.closest('#threejs-canvas')) return;
 
     pointer.set((event.touches[0].clientX / window.innerWidth) * 2 - 1, -(event.touches[0].clientY / window.innerHeight) * 2 + 1);
     raycaster.setFromCamera(pointer, camera);
