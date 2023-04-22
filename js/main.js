@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'OrbitControls';
+import {OrbitControls} from 'OrbitControls';
 
 let camera, scene, renderer;
 let plane;
@@ -127,8 +127,7 @@ function onColorPickerChange(event) {
 }
 
 function onTransparencySliderChange(event) {
-  const transparency = event.target.value / 100;
-  cubeMaterial.opacity = transparency;
+    cubeMaterial.opacity = event.target.value / 100;
 }
 
 function onPointerMove(event) {
@@ -437,11 +436,11 @@ function redo() {
 }
 
 function toggleAutoRotate() {
-    if (controls.autoRotate != true) {
+    if (controls.autoRotate) {
+        controls.autoRotate = false
+    } else {
         controls.autoRotate = true
         controls.autoRotateSpeed = 0.75;
-    } else {
-        controls.autoRotate = false
     }
 }
 
