@@ -132,6 +132,12 @@ function onTransparencySliderChange(event) {
 }
 
 function onPointerMove(event) {
+
+    if (deleteModeActive) {
+    rollOverMesh.visible = false;
+    return;
+    }
+
     if (toggleCameraControl) {
     rollOverMesh.visible = false;
     return;
