@@ -44,7 +44,7 @@ input[type="color"],
 input[type="range"],
 button {
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .color-picker-container {
