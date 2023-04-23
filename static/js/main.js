@@ -187,7 +187,7 @@ function onMouseDown(event) {
         const intersect = intersects[0];
 
         // delete cube
-        if (isShiftDown) {
+        if (isShiftDown || deleteModeActive) {
             deleteCube(intersect);
         // create cube
         } else {
@@ -206,14 +206,19 @@ function onTouchStart(event) {
     const intersects = raycaster.intersectObjects(objects, false);
 
     if (intersects.length > 0) {
-        // Prevent scrolling
         event.preventDefault();
+        const intersect = intersects[0];
 
-    const intersect = intersects[0];
-    createCube(intersect);
-    render();
+        if (deleteModeActive) {
+            deleteCube(intersect);
+        } else {
+            createCube(intersect);
+        }
+
+        render();
 
     }
+
 }
 
 function onDocumentKeyDown( event ) {
