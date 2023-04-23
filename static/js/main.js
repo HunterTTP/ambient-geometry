@@ -344,6 +344,9 @@ function loadState() {
 }
 
 function createCube(intersect) {
+    if (deleteModeActive) {
+        return;
+     }
 
     if (toggleCameraControl) {
         return;
