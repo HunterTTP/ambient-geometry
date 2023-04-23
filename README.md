@@ -7,7 +7,6 @@ Ambient Geometry is a relaxing 3D cube building web app that allows users to cre
 
 * Add click-and-drag to create lines and squares of blocks
 * Select mode for moving blocks
-* Delete mode to remove specific blocks
 * Music
 * Sound effects
 * Make translucent blocks appear seamless
@@ -20,3 +19,5 @@ Ambient Geometry is a relaxing 3D cube building web app that allows users to cre
 * User system to save and share creations
 * Gallery to browse other's creations (rate/vote system)
 * Move all imports into the project
+* Block highlighting in delete mode
+* Keyboard shortcuts
