@@ -20,6 +20,12 @@ animate();
 
 function init() {
 
+    //pull defaults from UI
+    const transparencySlider = document.getElementById("transparencySlider");
+    const initialOpacity = parseInt(transparencySlider.value) / 100;
+    const colorPicker = document.getElementById("colorPicker");
+    const initialColor = colorPicker.value;
+
     //camera
     camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
     camera.position.set( 300, 1000, 1300 );
@@ -39,7 +45,7 @@ function init() {
 
     // cubes
     cubeGeo = new THREE.BoxGeometry( 50, 50, 50 );
-    cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF, opacity: 0.5, transparent: true });
+    cubeMaterial = new THREE.MeshLambertMaterial({ color: initialColor, opacity: initialOpacity, transparent: true });
     document.getElementById("transparencySlider").addEventListener("input", onTransparencySliderChange);
 
     // grid
