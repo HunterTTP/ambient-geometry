@@ -10,6 +10,7 @@ let isCameraRotating = false;
 let controls, gridHelper;
 let toggleCameraControl = false;
 let historyPointer = -1;
+let deleteModeActive = false;
 
 const objects = [];
 const historyStack = [];
@@ -105,6 +106,7 @@ function init() {
     document.getElementById("toggleAutoRotate").addEventListener("click", toggleAutoRotate);
     document.getElementById("control-panel-toggle").addEventListener("click", controlPanelToggle);
     document.getElementById("globe").addEventListener("click", globeCameraToggle);
+    document.getElementById("deleteModeToggle").addEventListener("click", toggleDeleteMode);
 
 }
 
@@ -456,4 +458,18 @@ function globeCameraToggle() {
     } else {
         disableCameraControl();
     }
+}
+
+function toggleDeleteMode() {
+  deleteModeActive = !deleteModeActive;
+
+  const deleteModeIcon = document.getElementById("deleteModeToggle");
+
+  if (deleteModeActive){
+      deleteModeIcon.classList.add("icon-active");
+  }
+  else {
+      deleteModeIcon.classList.remove("icon-active");
+  }
+
 }
