@@ -19,10 +19,12 @@ animate();
 
 function init() {
 
+    //camera
     camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
     camera.position.set( 300, 1000, 1300 );
     camera.lookAt( 0, 0, 0 );
 
+    //scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0x333333 );
     updateControlPanelTextColor(scene.background.getHexString());
@@ -46,30 +48,27 @@ function init() {
     // plane
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
-
     const geometry = new THREE.PlaneGeometry( 1000, 1000 );
     geometry.rotateX( - Math.PI / 2 );
-
     plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: false } ) );
     scene.add( plane );
-
     objects.push( plane );
 
     // lights
     const ambientLight = new THREE.AmbientLight( 0x606060 );
     scene.add( ambientLight );
-
     const directionalLight = new THREE.DirectionalLight( 0xffffff );
     directionalLight.position.set( 1, 0.75, 0.5 ).normalize();
     scene.add( directionalLight );
 
+    // renderer
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.domElement.id = 'threejs-canvas';
     document.body.appendChild(renderer.domElement);
 
-    // Add initial OrbitControls
+    // controls
     controls = new OrbitControls(camera, renderer.domElement);
     controls.maxPolarAngle = Math.PI;
     controls.enablePan = false;
