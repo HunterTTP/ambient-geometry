@@ -1,5 +1,5 @@
-import * as THREE from 'three';
-import {OrbitControls} from 'OrbitControls';
+import * as THREE from '/static/libs/three.module.js';
+import { OrbitControls } from '/static/libs/OrbitControls.js';
 
 let camera, scene, renderer;
 let plane;
