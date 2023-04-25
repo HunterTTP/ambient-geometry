@@ -114,7 +114,8 @@ function init() {
     document.getElementById("globe").addEventListener("click", globeCameraToggle);
     document.getElementById("deleteModeToggle").addEventListener("click", toggleDeleteMode);
     document.getElementById('textureSelector').addEventListener('change', onTextureChange);
-
+    window.addEventListener('beforeunload', autoSaveState);
+    document.addEventListener('DOMContentLoaded', autoLoadState);
 
 }
 
@@ -330,7 +331,7 @@ function onClearAllButtonClick() {
     render();
 }
 
-function saveState() {
+function saveState(key = 'craftCubeState') {
   const state = {
     backgroundColor: scene.background.getHexString(),
     cubes: objects.slice(1).map(object => {
@@ -357,11 +358,11 @@ function saveState() {
     })
   };
   const jsonString = JSON.stringify(state);
-  localStorage.setItem('craftCubeState', jsonString);
+  localStorage.setItem(key, jsonString);
 }
 
-async function loadState() {
-  const jsonString = localStorage.getItem('craftCubeState');
+async function loadState(key = 'craftCubeState') {
+  const jsonString = localStorage.getItem(key);
   if (jsonString) {
     const state = JSON.parse(jsonString);
 
@@ -546,4 +547,14 @@ function toggleDeleteMode() {
       deleteModeIcon.classList.remove("icon-active");
   }
 
+}
+
+// Automatically save the state before the browser window is closed
+function autoSaveState() {
+    saveState('autoSaveState');
+}
+
+// Automatically load the state when the page is refreshed or reopened
+function autoLoadState() {
+    loadState('autoSaveState');
 }
