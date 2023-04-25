@@ -21,6 +21,10 @@
           <label for="backgroundColorPicker">Background Color</label>
         </div>
         <label for="transparencySlider">Cube Transparency</label><input type="range" id="transparencySlider" min="0" max="100" value="100" />
+        <label for="textureSelector">Cube Texture</label><select id="textureSelector">
+          <option value="none">None</option>
+          <option value="/textures/cube-border-texture.png">Solid Border</option>
+        </select>
         <button id="saveButton">Save current scene</button>
         <button id="loadButton">Load last save</button>
         <button id="clearAllButton">Clear current scene</button>

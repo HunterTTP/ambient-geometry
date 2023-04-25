@@ -113,6 +113,8 @@ function init() {
     document.getElementById("control-panel-toggle").addEventListener("click", controlPanelToggle);
     document.getElementById("globe").addEventListener("click", globeCameraToggle);
     document.getElementById("deleteModeToggle").addEventListener("click", toggleDeleteMode);
+    document.getElementById('textureSelector').addEventListener('change', onTextureChange);
+
 
 }
 
@@ -131,6 +133,22 @@ function onColorPickerChange(event) {
     const newColor = event.target.value;
     cubeMaterial.color.set(newColor);
     rollOverMaterial.color.set(newColor);
+}
+
+function onTextureChange(event) {
+  const texturePath = event.target.value;
+  const loader = new THREE.TextureLoader();
+
+  if (texturePath === 'none') {
+    cubeMaterial.map = null;
+  } else {
+    loader.load(texturePath, (texture) => {
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      cubeMaterial.map = texture;
+      cubeMaterial.blending = THREE.MultiplyBlending;
+      cubeMaterial.needsUpdate = true;
+    });
+  }
 }
 
 function onTransparencySliderChange(event) {
@@ -355,31 +373,33 @@ function loadState() {
 }
 
 function createCube(intersect) {
-    if (deleteModeActive) {
-        return;
-     }
+  if (deleteModeActive) {
+    return;
+  }
 
-    if (toggleCameraControl) {
-        return;
-     }
+  if (toggleCameraControl) {
+    return;
+  }
 
-    const newMaterial = new THREE.MeshLambertMaterial({
-        color: cubeMaterial.color.clone(),
-        opacity: cubeMaterial.opacity,
-        transparent: true,
-    });
+  const newMaterial = new THREE.MeshLambertMaterial({
+    color: cubeMaterial.color.clone(),
+    opacity: cubeMaterial.opacity,
+    transparent: true,
+    map: cubeMaterial.map,
+    blending: THREE.NormalBlending
+  });
 
-    const voxel = new THREE.Mesh(cubeGeo, newMaterial);
-    voxel.position.copy(intersect.point).add(intersect.face.normal);
-    voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
-    scene.add(voxel);
+  const voxel = new THREE.Mesh(cubeGeo, newMaterial);
+  voxel.position.copy(intersect.point).add(intersect.face.normal);
+  voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
+  scene.add(voxel);
 
-    objects.push(voxel);
+  objects.push(voxel);
 
-    // Add action to the history stack
-    historyStack.splice(historyPointer + 1, historyStack.length);
-    historyStack.push({ action: 'create', object: voxel });
-    historyPointer++;
+  // Add action to the history stack
+  historyStack.splice(historyPointer + 1, historyStack.length);
+  historyStack.push({ action: 'create', object: voxel });
+  historyPointer++;
 }
 
 function deleteCube(intersect) {
