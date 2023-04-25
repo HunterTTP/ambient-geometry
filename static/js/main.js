@@ -331,48 +331,79 @@ function onClearAllButtonClick() {
 }
 
 function saveState() {
-    const state = {
-        backgroundColor: scene.background.getHexString(),
-        cubes: objects.slice(1).map(object => {
-            return {
-                position: object.position.toArray(),
-                color: object.material.color.getHexString(),
-                opacity: object.material.opacity
-            };
-        })
-    };
-    const jsonString = JSON.stringify(state);
-    localStorage.setItem('craftCubeState', jsonString);
+  const state = {
+    backgroundColor: scene.background.getHexString(),
+    cubes: objects.slice(1).map(object => {
+      const textureSettings = object.material.map
+        ? {
+            src: object.material.map.image.src,
+            wrapS: object.material.map.wrapS,
+            wrapT: object.material.map.wrapT,
+            generateMipmaps: object.material.map.generateMipmaps,
+            minFilter: object.material.map.minFilter,
+            magFilter: object.material.map.magFilter
+          }
+        : null;
+
+      return {
+        position: object.position.toArray(),
+        color: object.material.color.getHexString(),
+        opacity: object.material.opacity,
+        textureSettings: textureSettings,
+        blending: object.material.blending,
+        transparent: object.material.transparent,
+        needsUpdate: object.material.needsUpdate
+      };
+    })
+  };
+  const jsonString = JSON.stringify(state);
+  localStorage.setItem('craftCubeState', jsonString);
 }
 
-function loadState() {
-    const jsonString = localStorage.getItem('craftCubeState');
-    if (jsonString) {
-        const state = JSON.parse(jsonString);
+async function loadState() {
+  const jsonString = localStorage.getItem('craftCubeState');
+  if (jsonString) {
+    const state = JSON.parse(jsonString);
 
-        // Set background color
-        scene.background = new THREE.Color(`#${state.backgroundColor}`);
+    // Set background color
+    scene.background = new THREE.Color(`#${state.backgroundColor}`);
 
-        // Remove all existing cubes
-        for (const object of objects.slice(1)) {
-            scene.remove(object);
-        }
-        objects.length = 1; // Keep only the plane
-
-        // Add cubes from the saved state
-        for (const cubeState of state.cubes) {
-            const material = new THREE.MeshLambertMaterial({
-                color: `#${cubeState.color}`,
-                opacity: cubeState.opacity,
-                transparent: true
-            });
-            const cube = new THREE.Mesh(cubeGeo, material);
-            cube.position.fromArray(cubeState.position);
-            scene.add(cube);
-            objects.push(cube);
-        }
-        render();
+    // Remove all existing cubes
+    for (const object of objects.slice(1)) {
+      scene.remove(object);
     }
+    objects.length = 1; // Keep only the plane
+
+    // Add cubes from the saved state
+    for (const cubeState of state.cubes) {
+      const material = new THREE.MeshLambertMaterial({
+        color: `#${cubeState.color}`,
+        opacity: cubeState.opacity,
+        transparent: cubeState.transparent,
+        blending: cubeState.blending
+      });
+
+      if (cubeState.textureSettings) {
+        const loader = new THREE.TextureLoader();
+        const texture = await new Promise((resolve) => {
+          loader.load(cubeState.textureSettings.src, resolve);
+        });
+        texture.wrapS = cubeState.textureSettings.wrapS;
+        texture.wrapT = cubeState.textureSettings.wrapT;
+        texture.generateMipmaps = cubeState.textureSettings.generateMipmaps;
+        texture.minFilter = cubeState.textureSettings.minFilter;
+        texture.magFilter = cubeState.textureSettings.magFilter;
+        material.map = texture;
+        material.needsUpdate = cubeState.needsUpdate;
+      }
+
+      const cube = new THREE.Mesh(cubeGeo, material);
+      cube.position.fromArray(cubeState.position);
+      scene.add(cube);
+      objects.push(cube);
+    }
+    render();
+  }
 }
 
 function createCube(intersect) {
