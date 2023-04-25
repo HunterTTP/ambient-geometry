@@ -435,6 +435,7 @@ function createCube(intersect) {
   historyStack.splice(historyPointer + 1, historyStack.length);
   historyStack.push({ action: 'create', object: voxel });
   historyPointer++;
+  saveState('autoSaveState');
 }
 
 function deleteCube(intersect) {
@@ -446,6 +447,7 @@ function deleteCube(intersect) {
         historyStack.splice(historyPointer + 1, historyStack.length);
         historyStack.push({ action: 'delete', object: intersect.object });
         historyPointer++;
+        saveState('autoSaveState');
     }
 }
 
