@@ -144,6 +144,9 @@ function onTextureChange(event) {
   } else {
     loader.load(texturePath, (texture) => {
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.generateMipmaps = false;
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.NearestFilter;
       cubeMaterial.map = texture;
       cubeMaterial.blending = THREE.MultiplyBlending;
       cubeMaterial.needsUpdate = true;
