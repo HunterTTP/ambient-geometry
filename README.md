@@ -12,12 +12,16 @@ Ambient Geometry is a relaxing 3D cube building web app that allows users to cre
 * Make translucent blocks appear seamless
 * Grid size adjustment
 * Limit blocks to grid size
-* Block texture options
 * Glowing blocks
 * Export for 3D printing, etc
 * Slider to toggle between layers
 * User system to save and share creations
 * Gallery to browse other's creations (rate/vote system)
-* Move all imports into the project
 * Block highlighting in delete mode
 * Keyboard shortcuts
+* More texture options
+
+
+# Contributing
+
+All contributions to this project are welcome. Please fork it, make your changes and create a pull request.
