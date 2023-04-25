@@ -452,13 +452,15 @@ function deleteCube(intersect) {
 }
 
 function enableCameraControl() {
+    controls.enablePan = true;
+
     controls.touches = {
 	ONE: THREE.TOUCH.ROTATE,
 	TWO: THREE.TOUCH.DOLLY_PAN
     }
     controls.mouseButtons = {
       LEFT: THREE.MOUSE.ROTATE,
-      MIDDLE: null,
+      MIDDLE: THREE.TOUCH.DOLLY_PAN,
       RIGHT: THREE.MOUSE.ROTATE
     };
     const globeIcon = document.getElementById("globe");
@@ -466,6 +468,8 @@ function enableCameraControl() {
 }
 
 function disableCameraControl() {
+    controls.enablePan = false;
+
     controls.touches = {
         ONE: null,
         TWO: null
