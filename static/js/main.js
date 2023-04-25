@@ -551,12 +551,10 @@ function toggleDeleteMode() {
 
 }
 
-// Automatically save the state before the browser window is closed
 function autoSaveState() {
     saveState('autoSaveState');
 }
 
-// Automatically load the state when the page is refreshed or reopened
 function autoLoadState() {
     loadState('autoSaveState');
 }
